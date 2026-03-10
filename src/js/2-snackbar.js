@@ -9,27 +9,29 @@ form.addEventListener('submit', event => {
   const delay = Number(event.target.elements.delay.value);
   const state = event.target.elements.state.value;
 
-  const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (state === 'fulfilled') {
-        resolve();
-      } else {
-        reject();
-      }
-    }, delay);
-  });
-
-  promise
-    .then(() => {
+  createPromise(delay, state)
+    .then(delay => {
       iziToast.success({
         message: `Fulfilled promise in ${delay}ms`,
         position: 'topRight',
       });
     })
-    .catch(() => {
+    .catch(delay => {
       iziToast.error({
         message: `Rejected promise in ${delay}ms`,
         position: 'topRight',
       });
     });
 });
+
+function createPromise(delay, state) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (state === 'fulfilled') {
+        resolve(delay);
+      } else {
+        reject(delay);
+      }
+    }, delay);
+  });
+}
