@@ -1,15 +1,9 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
-const btnSubmit = document.querySelector('button');
-btnSubmit.classList.add('submit');
+const form = document.querySelector('form');
 
-const labelFirst = document.querySelector('form');
-labelFirst.firstElementChild.classList.add('label-class');
-
-labelFirst.addEventListener('submit', handlerProm);
-
-function handlerProm(event) {
+form.addEventListener('submit', event => {
   event.preventDefault();
 
   const delay = Number(event.target.elements.delay.value);
@@ -18,24 +12,24 @@ function handlerProm(event) {
   const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
       if (state === 'fulfilled') {
-        resolve(delay);
+        resolve();
       } else {
-        reject(delay);
+        reject();
       }
     }, delay);
   });
 
   promise
-    .then(delay => {
+    .then(() => {
       iziToast.success({
         message: `Fulfilled promise in ${delay}ms`,
         position: 'topRight',
       });
     })
-    .catch(delay => {
+    .catch(() => {
       iziToast.error({
         message: `Rejected promise in ${delay}ms`,
         position: 'topRight',
       });
     });
-}
+});
